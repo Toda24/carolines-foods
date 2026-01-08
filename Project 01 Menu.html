@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - Caroline's Foods & Beverages</title>
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="project o1 style.css">
+
+    <script src="Project app.js" defer></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
+
+    <style>
+        .menu-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+
+        .tab-btn {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover { background-color: rgba(39, 174, 96, 0.1); }
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+        }
+
+        .menu-category { display: none; animation: fadeSlideUp 0.5s ease forwards; }
+        .menu-category.active { display: block; }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .min-order-badge {
+            font-size: 0.8rem;
+            background: #e74c3c;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Caroline's F&B</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Project 01 Menu.html" class="active-link">Menu</a></li>
+                <li><a href="Project 01 About.html">About</a></li> 
+                <li><a href="Project 01 Contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="cart-button-wrapper">
+            <button id="cart-button">Cart (0)</button>
+        </div>
+    </header>
+
+    <main>
+        <nav class="breadcrumbs">
+            <ol>
+                <li><a href="index.html">Home</a></li>
+                <li>Menu</li>
+            </ol>
+        </nav>
+
+        <section id="menu-page">
+            <h2>Our Menu</h2>
+            <p style="text-align: center; margin-bottom: 30px;">Select a category to view items.</p>
+
+            <div class="menu-tabs">
+                <button class="tab-btn active" onclick="openTab('meals')">Meals</button>
+                <button class="tab-btn" onclick="openTab('toppings')">Toppings</button>
+                <button class="tab-btn" onclick="openTab('snacks')">Snacks</button>
+                <button class="tab-btn" onclick="openTab('drinks')">Drinks</button>
+                <button class="tab-btn" onclick="openTab('water-ice')">Water & Ice</button>
+            </div>
+
+            <div id="meals" class="menu-category active">
+                <h3 style="text-align: center; color: var(--primary-color);">Main Meals</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <img src="Images/Stir fry Spag.jpg" alt="Stir Fry Spaghetti"> 
+                        <h4>Stir Fry Spaghetti</h4>
+                        <p class="price">₦3,000</p>
+                        <button class="add-to-cart-btn" data-id="d5" data-name="Stir Fry Spag" data-price="3000">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/images Jollof Rice.jpg" alt="Nigerian Jollof Rice">
+                        <h4>Jollof Rice</h4>
+                        <p class="price">₦3,500</p>
+                        <button class="add-to-cart-btn" data-id="d1" data-name="Jollof Rice" data-price="3500">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/images - Fried Rice.jpg" alt="Nigerian Fried Rice">
+                        <h4>Fried Rice</h4>
+                        <p class="price">₦3,500</p>
+                        <button class="add-to-cart-btn" data-id="d2" data-name="Fried Rice" data-price="3500">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/Pounded Yam and Egusi.jpg" alt="Pounded Yam and Egusi Soup">
+                        <h4>Pounded Yam & Egusi</h4>
+                        <p class="price">₦4,500</p>
+                        <button class="add-to-cart-btn" data-id="d3" data-name="Pounded Yam & Egusi" data-price="4500">Add to Cart</button>
+                    </div>
+                      <div class="menu-item">
+                        <img src="Images/images - Amala and Ewedu.jpg" alt="Amala and Ewedu Soup">
+                        <h4>Amala & Ewedu</h4>
+                        <p class="price">₦4,000</p>
+                        <button class="add-to-cart-btn" data-id="d4" data-name="Amala & Ewedu" data-price="4000">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="toppings" class="menu-category">
+                <h3 style="text-align: center; color: var(--primary-color);">Add Your Toppings</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <img src="Images/Grilled Chicken.jpg" alt="Grilled Chicken">
+                        <h4>Grilled Chicken</h4>
+                        <p class="price">₦1,500</p>
+                        <button class="add-to-cart-btn" data-id="t1" data-name="Grilled Chicken" data-price="1500">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/Fried Plantain.avif" alt="Fried Plantain"> 
+                        <h4>Fried Plantain</h4>
+                        <p class="price">₦500</p>
+                        <button class="add-to-cart-btn" data-id="t5" data-name="Fried Plantain" data-price="500">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/Coleslaw.jpg" alt="Coleslaw">
+                        <h4>Coleslaw</h4>
+                        <p class="price">₦1,000</p>
+                        <button class="add-to-cart-btn" data-id="t2" data-name="Coleslaw" data-price="1000">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/licensed-image- Ponmo.jpg" alt="Ponmo (Cow Skin)">
+                        <h4>Ponmo</h4>
+                        <p class="price">₦700</p>
+                        <button class="add-to-cart-btn" data-id="t3" data-name="Ponmo" data-price="700">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/Fried Fish.jpg" alt="Fried Fish (Croaker)">
+                        <h4>Fried Fish</h4>
+                        <p class="price">₦1,200</p>
+                        <button class="add-to-cart-btn" data-id="t4" data-name="Fried Fish" data-price="1200">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="snacks" class="menu-category">
+                <h3 style="text-align: center; color: var(--primary-color);">Snacks & Bites</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <img src="Images/images - Sharwama.jpg" alt="Chicken Shawarma">
+                        <h4>Shawarma</h4>
+                        <p class="price">₦2,500</p>
+                        <button class="add-to-cart-btn" data-id="s4" data-name="Shawarma" data-price="2500">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/Meat Pie.webp" alt="Meatpie">
+                        <h4>Meatpie</h4>
+                        <p class="price">₦1,000</p>
+                        <button class="add-to-cart-btn" data-id="s3" data-name="Meatpie" data-price="1000">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/Chicken and Chips.jpg" alt="Chicken and chips">
+                        <h4>Chicken and Chips</h4>
+                        <p class="price">₦3,500</p>
+                        <button class="add-to-cart-btn" data-id="s7" data-name="Chicken and Chips" data-price="3500">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/Puff Puff.webp" alt="Puff Puff (pack of 5)">
+                        <h4>Puff Puff (x5)</h4>
+                        <p class="price">₦500</p>
+                        <button class="add-to-cart-btn" data-id="s1" data-name="Puff Puff" data-price="500">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/images - Donuts.jpg" alt="Donut">
+                        <h4>Donut</h4>
+                        <p class="price">₦700</p>
+                        <button class="add-to-cart-btn" data-id="s2" data-name="Donut" data-price="700">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/licensed-image - Chin Chin.jpg" alt="Chin Chin (bottle)">
+                        <h4>Chin Chin</h4>
+                        <p class="price">₦1,500</p>
+                        <button class="add-to-cart-btn" data-id="s5" data-name="Chin Chin" data-price="1500">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/images - Samosa.jpg" alt="Samosa (pack of 3)">
+                        <h4>Samosa (x3)</h4>
+                        <p class="price">₦600</p>
+                        <button class="add-to-cart-btn" data-id="s6" data-name="Samosa" data-price="600">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="drinks" class="menu-category">
+                <h3 style="text-align: center; color: var(--primary-color);">Drinks & Refreshments</h3>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <img src="Images/images - Hollandia Yogurt.jpg" alt="Hollandia Yoghurt">
+                        <h4>Hollandia Yoghurt</h4>
+                        <p class="price">₦1,000</p>
+                        <button class="add-to-cart-btn" data-id="k1" data-name="Hollandia Yoghurt" data-price="1000">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/Ice Tea.png" alt="Ice Tea">
+                        <h4>Ice Tea</h4>
+                        <p class="price">₦800</p>
+                        <button class="add-to-cart-btn" data-id="k2" data-name="Ice Tea" data-price="800">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/images - Sosa.jpg" alt="Sosa (Big)">
+                        <h4>Sosa</h4>
+                        <p class="price">₦700</p>
+                        <button class="add-to-cart-btn" data-id="k3" data-name="Sosa" data-price="700">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/licensed-image - Coke.jpg" alt="Coke (50cl)">
+                        <h4>Coke</h4>
+                        <p class="price">₦500</p>
+                        <button class="add-to-cart-btn" data-id="k4" data-name="Coke" data-price="500">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/Fanta.webp" alt="Fanta (50cl)">
+                        <h4>Fanta</h4>
+                        <p class="price">₦500</p>
+                        <button class="add-to-cart-btn" data-id="k5" data-name="Fanta" data-price="500">Add to Cart</button>
+                    </div>
+                    <div class="menu-item">
+                        <img src="Images/Sprite.png" alt="Sprite (50cl)">
+                        <h4>Sprite</h4>
+                        <p class="price">₦500</p>
+                        <button class="add-to-cart-btn" data-id="k6" data-name="Sprite" data-price="500">Add to Cart</button>
+                    </div>
+                      <div class="menu-item">
+                        <img src="Images/Schweppes.jpg" alt="Schweppes">
+                        <h4>Schweppes</h4>
+                        <p class="price">₦600</p>
+                        <button class="add-to-cart-btn" data-id="k7" data-name="Schweppes" data-price="600">Add to Cart</button>
+                    </div>
+                      <div class="menu-item">
+                        <img src="Images/images - Chivita.jpg" alt="Chivita (1L)">
+                        <h4>Chivita</h4>
+                        <p class="price">₦1,200</p>
+                        <button class="add-to-cart-btn" data-id="k8" data-name="Chivita" data-price="1200">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="water-ice" class="menu-category">
+                <h3 style="text-align: center; color: var(--primary-color);">Water & Ice Blocks</h3>
+                <div class="menu-grid">
+                    
+                    <div class="menu-item">
+                        <img src="Images/pure water 1.jpg" alt="Sachet Water">
+                        <h4>Bag of Pure Water <span class="min-order-badge">Min 10</span></h4>
+                        <p class="price">₦400</p>
+                        <button class="add-to-cart-btn btn-blue" data-id="w1" data-name="Bag of Water" data-price="400">Add to Cart</button>
+                    </div>
+
+                    <div class="menu-item">
+                        <img src="Images/ice block 1.jpg" alt="Ice Blocks">
+                        <h4>Ice Block <span class="min-order-badge">Min 20</span></h4>
+                        <p class="price" id="ice-price-display">₦500</p> 
+                        <button class="add-to-cart-btn btn-blue" id="ice-btn" data-id="w2" data-name="Ice Block" data-price="500">Add to Cart</button>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Caroline's Foods & Beverages. All rights reserved.</p>
+        <p style="font-size: 0.9rem; margin-top: 5px;">02015021727 | Lagos, Nigeria</p>
+    </footer>
+
+    <div id="cart-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+            <div id="cart-view">
+                <h2>Your Cart</h2>
+                <div id="cart-items-container"></div>
+                <div class="cart-summary">
+                    <h3>Total: <span id="cart-total">₦0</span></h3>
+                    <button class="cta-button" id="checkout-btn">Proceed to Checkout</button>
+                    <button class="clear-cart-btn" id="clear-cart-btn">Clear Cart</button>
+                </div>
+            </div>
+            <div id="checkout-view" style="display: none;">
+                <h2>Checkout</h2>
+                <form id="checkout-form">
+                    <div style="display:none; visibility:hidden;">
+                        <input type="text" name="bot_check" tabindex="-1" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="checkout-name">Full Name</label>
+                        <input type="text" id="checkout-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkout-lga">LGA (Delivery Zone)</label>
+                        <select id="checkout-lga" required style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 5px;">
+                            <option value="">Select Local Govt Area</option>
+                            <option value="Amuwo-Odofin">Amuwo-Odofin</option>
+                            <option value="Other">Other (Outside Delivery Zone)</option>
+                        </select>
+                        <small style="color: red; display: none;" id="lga-error">Sorry, we currently only deliver to Amuwo-Odofin.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkout-address">Delivery Address</label>
+                        <input type="text" id="checkout-address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkout-phone">Phone Number</label>
+                        <input type="tel" id="checkout-phone" required>
+                    </div>
+                    <button type="submit" class="cta-button">Place Order</button>
+                    <button type="button" class="back-to-cart-btn" id="back-to-cart-btn">Back to Cart</button>
+                </form>
+            </div>
+            <div id="thank-you-view" style="display: none;">
+                <h2>Thank You!</h2>
+                <p>Your order has been received.</p>
+                <button class="cta-button" id="new-order-btn">Start New Order</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            var i;
+            var x = document.getElementsByClassName("menu-category");
+            for (i = 0; i < x.length; i++) {
+                x[i].className = x[i].className.replace(" active", "");
+            }
+            var tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).className += " active";
+            event.currentTarget.className += " active";
+        }
+    </script>
+</body>
+</html>
