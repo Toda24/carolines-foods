@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet" href="project o1 style.css">
 
+    <script src="https://js.paystack.co/v1/inline.js"></script>
     <script src="Project app.js" defer></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js" defer></script>
 </head>
@@ -115,6 +116,11 @@
                         <label for="checkout-name">Full Name</label>
                         <input type="text" id="checkout-name" required>
                     </div>
+
+                    <div class="form-group">
+                        <label for="checkout-email">Email Address</label>
+                        <input type="email" id="checkout-email" placeholder="name@example.com" required>
+                    </div>
                     
                     <div class="form-group">
                         <label for="checkout-lga">LGA (Delivery Zone)</label>
@@ -134,35 +140,18 @@
                         <label for="checkout-phone">Phone Number</label>
                         <input type="tel" id="checkout-phone" required>
                     </div>
-                    <button type="submit" class="cta-button">Place Order</button>
+                    <button type="submit" class="cta-button">Pay & Place Order</button>
                     <button type="button" class="back-to-cart-btn" id="back-to-cart-btn">Back to Cart</button>
                 </form>
             </div>
 
             <div id="thank-you-view" style="display: none;">
-                <h2>Thank You!</h2>
+                <h2>Payment Successful!</h2>
                 <p>Your order has been received.</p>
-                <p>We'll call you shortly to confirm payment.</p>
+                <p>We'll process it immediately.</p>
                 <button class="cta-button" id="new-order-btn">Start New Order</button>
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script>
-      const swiper = new Swiper('.main-carousel', {
-        loop: true,
-        autoplay: {
-          delay: 4000, 
-          disableOnInteraction: false,
-        },
-        slidesPerView: 1,
-        effect: 'fade', 
-        fadeEffect: {
-          crossFade: true
-        },
-        speed: 1500, 
-      });
-    </script>
 </body>
 </html>

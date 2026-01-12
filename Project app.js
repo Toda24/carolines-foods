@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="cart-item" data-id="${item.id}">
                     <div>
                         <p style="font-weight:bold;">${item.name}</p>
-                        <p style="font-size:0.9rem; color:#555;">₦${item.price} x ${item.quantity} = ₦${item.price * item.quantity}</p>
+                        <p style="font-size:0.9rem; color:#555;">₦${item.price} x ${item.quantity} = ₦${(item.price * item.quantity).toLocaleString()}</p>
                     </div>
                     <div class="cart-actions" style="display:flex; gap:10px; align-items:center;">
                         <div class="cart-quantity">
@@ -95,6 +95,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cartTotalEl.textContent = `₦${total.toLocaleString()}`;
         cartButton.textContent = `Cart (${totalItems})`;
+    }
+
+    // Helper to get raw number from Total string
+    function getCartTotalAmount() {
+        // Remove ₦ and commas to get raw number
+        const totalString = cartTotalEl.textContent.replace(/[₦,]/g, '');
+        return parseInt(totalString) || 0;
     }
 
     function addToCart(productId, productName, productPrice) {
@@ -125,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         renderCart();
 
-        // UPDATED: Orange Gradient for "Add to Cart"
         Toastify({
             text: `✅ ${productName} added`,
             duration: 3000,
@@ -247,13 +253,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if(newOrderBtn) newOrderBtn.addEventListener('click', () => toggleModal(false));
 
     // ==================================
-    // === 5. FORM SUBMISSIONS ===
+    // === 5. CHECKOUT & PAYMENT LOGIC ===
     // ==================================
 
     if(checkoutForm) {
-        checkoutForm.addEventListener('submit', async (e) => {
+        checkoutForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
+            // 1. Validation First
             const lga = document.getElementById('checkout-lga').value;
             const lgaError = document.getElementById('lga-error');
             
@@ -267,40 +274,89 @@ document.addEventListener('DOMContentLoaded', () => {
             const botCheck = document.querySelector('input[name="bot_check"]').value;
             if(botCheck) return;
 
-            const btn = checkoutForm.querySelector('button[type="submit"]');
-            btn.innerHTML = 'Sending...';
-            btn.disabled = true;
+            // 2. Prepare Data for Paystack
+            const email = document.getElementById('checkout-email').value; // New Field
+            const phone = document.getElementById('checkout-phone').value;
+            const amount = getCartTotalAmount();
 
-            const formData = {
-                type: 'Order',
-                name: document.getElementById('checkout-name').value,
-                lga: lga,
-                address: document.getElementById('checkout-address').value,
-                phone: document.getElementById('checkout-phone').value,
-                order_details: cart,
-                total_value: cartTotalEl.textContent,
-                timestamp: new Date().toISOString()
-            };
-
-            try {
-                const webhookUrl = 'https://tolu-toye-01.app.n8n.cloud/webhook/caroline-order';
-                await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(formData)
-                });
-                
-                clearCart();
-                checkoutForm.reset();
-                showThankYouView();
-            } catch(err) {
-                alert("Network error. Please try again.");
-            } finally {
-                btn.innerHTML = 'Place Order';
-                btn.disabled = false;
+            if (amount === 0) {
+                alert("Cart is empty");
+                return;
             }
+
+            // 3. Trigger Paystack Popup
+            payWithPaystack(email, phone, amount);
         });
     }
+
+    function payWithPaystack(email, phone, amount) {
+        const handler = PaystackPop.setup({
+            // 🔴 REPLACE THIS WITH YOUR PUBLIC KEY
+            key: 'pk_test_ce95e0b6e3ec3d1915e272fd893744b2094fced2', 
+            email: email,
+            amount: amount * 100, // Convert to kobo
+            currency: 'NGN',
+            metadata: {
+                custom_fields: [
+                    { display_name: "Mobile Number", variable_name: "mobile_number", value: phone }
+                ]
+            },
+            callback: function(response) {
+                // Payment Success!
+                // response.reference is the transaction ID
+                sendOrderToN8n(response.reference);
+            },
+            onClose: function() {
+                alert('Transaction was not completed.');
+            }
+        });
+        handler.openIframe();
+    }
+
+    async function sendOrderToN8n(paymentReference) {
+        const btn = checkoutForm.querySelector('button[type="submit"]');
+        btn.innerHTML = 'Verifying...';
+        btn.disabled = true;
+
+        const formData = {
+            type: 'Order', // Switch Node Label
+            name: document.getElementById('checkout-name').value,
+            email: document.getElementById('checkout-email').value,
+            lga: document.getElementById('checkout-lga').value,
+            address: document.getElementById('checkout-address').value,
+            phone: document.getElementById('checkout-phone').value,
+            order_details: cart,
+            total_value: cartTotalEl.textContent,
+            payment_ref: paymentReference, // 🟢 Proof of Payment
+            timestamp: new Date().toISOString()
+        };
+
+        try {
+            // Your Production Webhook
+            const webhookUrl = 'https://tolu-toye-01.app.n8n.cloud/webhook/caroline-order';
+            
+            await fetch(webhookUrl, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(formData)
+            });
+            
+            clearCart();
+            checkoutForm.reset();
+            showThankYouView();
+        } catch(err) {
+            console.error(err);
+            // Even if n8n fails, payment is done.
+            alert("Payment successful! But we had trouble sending the notification. Please contact us with Ref: " + paymentReference);
+        } finally {
+            btn.innerHTML = 'Place Order';
+            btn.disabled = false;
+        }
+    }
+
+    // ==================================
+    // === 6. CONTACT FORM ===
+    // ==================================
 
     if(contactFormPage) {
         contactFormPage.addEventListener('submit', async (e) => {
